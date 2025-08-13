@@ -45,3 +45,7 @@ This project is released under the [MIT License](https://github.com/Drag0nSlay/L
 LeakHunt’s detection capabilities are powered by:
 - [SecretFinder](https://github.com/m4ll0k/SecretFinder) – Core secret detection engine.
 - [LinkFinder](https://github.com/GerbenJavado/LinkFinder) – For endpoint discovery (optional integration).
+
+## 📢 Disclaimer
+This tool is intended **for educational and authorized security testing only.**
+Unauthorized use of this tool against systems without prior consent is **illegal.**
