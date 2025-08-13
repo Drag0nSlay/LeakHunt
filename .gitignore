@@ -1,0 +1,48 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment files
+.env
+*.env
+.env.*
+
+# Logs
+*.log
+logs/
+*.out
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.vscode/
+.idea/
+
+# Test and temp files
+*.tmp
+*.temp
+*.bak
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Reports and output files
+output/
+reports/
+results/
+secrets.json
+
+# Tool-specific
+secretfinder/
+linkfinder/
