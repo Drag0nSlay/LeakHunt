@@ -4,7 +4,6 @@ import sys
 import re
 import os
 
-# Colors
 GREEN = "\033[92m"
 BLUE = "\033[94m"
 YELLOW = "\033[93m"
@@ -13,15 +12,12 @@ RESET = "\033[0m"
 def colorize(line):
     original_line = line.rstrip("\n")
 
-    # SCANNING URL
     if "[ + ] SCANNING URL:" in original_line:
         line = original_line.replace("[ + ] SCANNING URL:", f"{GREEN}[ + ] SCANNING URL:{RESET}")
 
-    # URL
     elif "[ + ] URL:" in original_line:
         line = original_line.replace("[ + ] URL:", f"{BLUE}[ + ] URL:{RESET}")
 
-    # Keywords (API, key, token, secret)
     if re.search(r"\b(api|key|token|secret)\b", original_line, re.IGNORECASE):
         line = re.sub(r"\b(api|key|token|secret)\b", f"{YELLOW}\\1{RESET}", line, flags=re.IGNORECASE)
 
@@ -39,7 +35,6 @@ def main():
         print(f"[!] File not found: {args.file}")
         sys.exit(1)
 
-    # Read and prepare URLs
     urls = []
     with open(args.file, "r") as infile:
         for line in infile:
@@ -53,8 +48,7 @@ def main():
     if not urls:
         print("[!] No valid URLs found.")
         sys.exit(1)
-
-    # Scan each URL
+        
     for js_url in urls:
         print(f"{GREEN}[ + ] SCANNING URL: {js_url}{RESET}")
         process = subprocess.Popen(
@@ -69,7 +63,7 @@ def main():
             print(colorize(line))
 
         process.wait()
-        print()  # Space between scans
+        print() 
 
 if __name__ == "__main__":
     main()
