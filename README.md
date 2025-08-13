@@ -28,3 +28,15 @@ cd LeakHunt
 
 # Install dependencies
 pip install -r requirements.txt
+```
+
+## 🚀 Usage
+```bash
+python3 LeakHunt.py -f js_files.txt -t secretfinder/SecretFinder.py -a "-o cli"
+```
+
+## 💡 Pro Tip
+You can combine LeakHunt with [LinkFinder](https://github.com/GerbenJavado/LinkFinder) to first extract all JavaScript endpoints from a target and then run LeakHunt for maximum coverage.
+
+## ⚖ License
+This project is released under the [MIT License] – see the LICENSE file for details.
