@@ -40,3 +40,8 @@ You can combine LeakHunt with [LinkFinder](https://github.com/GerbenJavado/LinkF
 
 ## ⚖ License
 This project is released under the [MIT License](https://github.com/Drag0nSlay/LeakHunt/tree/main?tab=MIT-1-ov-file) – see the LICENSE file for details.
+
+## 🙏 Credits
+LeakHunt’s detection capabilities are powered by:
+- [SecretFinder](https://github.com/m4ll0k/SecretFinder) – Core secret detection engine.
+- [LinkFinder](https://github.com/GerbenJavado/LinkFinder) – For endpoint discovery (optional integration).
