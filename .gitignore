@@ -1,4 +1,3 @@
-# Python cache and compiled files
 __pycache__/
 *.py[cod]
 *.pyo
@@ -9,7 +8,6 @@ __pycache__/
 dist/
 build/
 
-# Environment files
 .env
 *.env
 .env.*
@@ -19,30 +17,24 @@ build/
 logs/
 *.out
 
-# OS-specific
 .DS_Store
 Thumbs.db
 
-# IDE-specific
 .vscode/
 .idea/
 
-# Test and temp files
 *.tmp
 *.temp
 *.bak
 
-# Virtual environments
 venv/
 env/
 ENV/
 
-# Reports and output files
 output/
 reports/
 results/
 secrets.json
 
-# Tool-specific
 secretfinder/
 linkfinder/
