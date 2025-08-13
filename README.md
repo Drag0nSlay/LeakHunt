@@ -39,4 +39,4 @@ python3 LeakHunt.py -f js_files.txt -t secretfinder/SecretFinder.py -a "-o cli"
 You can combine LeakHunt with [LinkFinder](https://github.com/GerbenJavado/LinkFinder) to first extract all JavaScript endpoints from a target and then run LeakHunt for maximum coverage.
 
 ## ⚖ License
-This project is released under the [MIT License] – see the LICENSE file for details.
+This project is released under the [MIT License](https://github.com/Drag0nSlay/LeakHunt/tree/main?tab=MIT-1-ov-file) – see the LICENSE file for details.
