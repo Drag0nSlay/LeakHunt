@@ -12,8 +12,6 @@ It leverages robust detection engines from [SecretFinder](https://github.com/m4l
 - 🖥 **Color-Coded Output** – Readable CLI output for quick analysis.
 - ⚡ **Fast & Lightweight** – Minimal dependencies, quick execution.
 
----
-
 ## 📌 Use Cases:
 - **Bug Bounty Hunting** – Scan target JavaScript files for secrets before reporting vulnerabilities.
 
@@ -21,6 +19,7 @@ It leverages robust detection engines from [SecretFinder](https://github.com/m4l
 
 - **Security Audits** – Ensure no hardcoded keys or tokens are left exposed in production.
 
+---
 ## 🛠 Installation & Setup:
   **1. Clone this repository**
 ``` bash 
