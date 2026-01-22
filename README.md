@@ -31,19 +31,8 @@ git clone https://github.com/GerbenJavado/LinkFinder.git
 ``` bash
 cd SecretFinder   # or LinkFinder
 ```
-  **3. Create LeakHunt.py**
-``` bash
-nano LeakHunt.py
-```
-*(Or use vim LeakHunt.py if you prefer)*
 
-  **4. Copy & paste the LeakHunt script** into the editor, then save and exit.
-
-   - **In nano:** Press ```CTRL + O``` to save, ```Enter``` to confirm, and ```CTRL + X``` to exit.
-
-   - **In vim:** Press ```Esc```, then type ```:wq``` and hit ```Enter```.
-
-**5. Install Dependencies:**
+**3. Install Dependencies:**
 ```
 pip install -r requirements.txt
 ```
