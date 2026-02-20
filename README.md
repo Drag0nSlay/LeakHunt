@@ -1,68 +1,72 @@
-# 🔍 LeakHunt
-## Advanced Secret Discovery & API Key Exposure Detection Tool
+# 🔍 LeakHunt v2.0.0
+LeakHunt is now an **independent secret scanner** for bug bounty and security testing workflows.
+It scans URLs and local files, supports multithreaded fetching, entropy filtering, severity tagging, and JSON reporting.
 
-LeakHunt is a lightweight yet powerful **secret scanning utility** designed for penetration testers, bug bounty hunters, and security researchers.
-It leverages robust detection engines from [SecretFinder](https://github.com/m4ll0k/SecretFinder) and enhances them with additional features, making it easier to identify **API keys, tokens, endpoints, and sensitive information** from JavaScript files and web assets.
+## Features
 
----
-## ✨ Features:
-- 🚀 **High-Accuracy Secret Detection** – Finds API keys, tokens, and credentials hidden inside JS files.
-- 🌐 **Multiple Input Options** – Works with URLs, local files, and bulk lists.
-- 🎯 **Integration-Ready** – Can be used alongside other tools like [LinkFinder](https://github.com/GerbenJavado/LinkFinder) for deeper asset mapping.
-- 🖥 **Color-Coded Output** – Readable CLI output for quick analysis.
-- ⚡ **Fast & Lightweight** – Minimal dependencies, quick execution.
+- Independent scanner engine (no SecretFinder / LinkFinder dependency)
+- Extended secret detection patterns, including:
+  - GitHub tokens (`ghp_`, `github_pat_`)
+  - Discord tokens
+  - Firebase keys
+  - OAuth Bearer tokens
+  - Private key blocks
+  - Mailgun / SendGrid / Twilio keys
+- Entropy scoring to reduce weak false positives
+- Deduplicated findings
+- Multi-threaded target fetching (`-t`)
+- CLI inputs: single URL, URL/file lists, local files, mixed targets
+- JSON export (`-o`)
+- Verbose debug logging (`-v`)
+- Severity summary (high / medium / low)
 
-## 📌 Use Cases:
-- **Bug Bounty Hunting** – Scan target JavaScript files for secrets before reporting vulnerabilities.
+## Installation
 
-- **Penetration Testing** – Automate sensitive information discovery during engagements.
-
-- **Security Audits** – Ensure no hardcoded keys or tokens are left exposed in production.
-
----
-## 🛠 Installation & Setup:
-  **1. Clone this repository**
-``` bash 
-git clone https://github.com/m4ll0k/SecretFinder.git
-# or
-git clone https://github.com/GerbenJavado/LinkFinder.git
-```
-  **2. Open the Repository Folder**
-``` bash
-cd SecretFinder   # or LinkFinder
-```
-
-**3. Install Dependencies:**
-```
+```bash
 pip install -r requirements.txt
+pip install .
+```
+
+## CLI Usage
+
+```bash
+# mixed targets
+leakhunt -t 8 -o findings.json https://example.com/app.js ./local.js
+
+# single URL (repeatable)
+leakhunt -u https://example.com/app.js -u https://example.com/main.js
+
+# targets from file (URLs and/or local paths)
+leakhunt -U lab/targets.txt -t 10 -v
+
+# local files
+leakhunt -f lab/index.html -f lab/test_private_key.txt
 ```
 ---     
 
-## 🚀 Usage
+## Local Testing Lab
+
+1. Start a local server from repo root:
+
+2. In another terminal:
+
 ```bash
-python3 LeakHunt.py -f js_files.txt -t secretfinder/SecretFinder.py -a "-o cli"
+leakhunt -U lab/targets.txt -t 5 -v -o lab/results.json
 ```
 
-## 💡 Pro Tip
-You can combine LeakHunt with [LinkFinder](https://github.com/GerbenJavado/LinkFinder) to first extract all JavaScript endpoints from a target and then run LeakHunt for maximum coverage.
+Lab assets include:
+- `lab/index.html` with dummy tokens
+- `lab/test_private_key.txt` with a dummy private key block
 
-## ⚖ License
-This project is released under the [MIT License](https://github.com/Drag0nSlay/LeakHunt/tree/main?tab=MIT-1-ov-file) – see the LICENSE file for details.
-
-## 🙏 Credits
-LeakHunt’s detection capabilities are powered by:
-- [SecretFinder](https://github.com/m4ll0k/SecretFinder) – Core secret detection engine.
-- [LinkFinder](https://github.com/GerbenJavado/LinkFinder) – For endpoint discovery (optional integration).
-
-## 📢 Disclaimer
-This tool is intended **for educational and authorized security testing only.**
-Unauthorized use of this tool against systems without prior consent is **illegal.**
+## Ethics Warning
+> Use LeakHunt only on systems you own or have explicit authorization to test. Unauthorized scanning may violate laws, terms of service, or responsible disclosure rules.
 
 ---
-## 🚀 Future Plans
+## Release Notes (v2.0.0)
 
-- Make LeakHunt a fully independent tool (no dependency on SecretFinder/LinkFinder).
-- Add a PyPI package for one-command installation (`pip install leakhunt`).
-- Implement additional secret detection patterns (API keys, tokens, etc.).
-- Add multi-threaded scanning for faster results.
-<!-- Create a GUI version of LeakHunt.
+- Full project refactor into package layout (`leakhunt/`)
+- Independent scanning engine with expanded pattern bank
+- Multi-threaded fetching and flexible CLI target input
+- JSON report output and severity summaries
+- Local lab files for repeatable testing
+- Packaging support via `setup.py`
