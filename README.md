@@ -57,6 +57,7 @@ leakhunt -U lab/targets.txt -t 5 -v -o lab/results.json
 Lab assets include:
 - `lab/index.html` with dummy tokens
 - `lab/test_private_key.txt` with a dummy private key block
+![Demo](Picsart_26-02-22_22-02-13-442.jpg)
 
 ## Ethics Warning
 > Use LeakHunt only on systems you own or have explicit authorization to test. Unauthorized scanning may violate laws, terms of service, or responsible disclosure rules.
