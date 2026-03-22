@@ -37,3 +37,8 @@ def test_main_returns_error_for_invalid_output_path(
 def test_parse_args_rejects_non_positive_threads() -> None:
     with pytest.raises(SystemExit):
         cli.parse_args(["-t", "0", "README.md"])
+
+
+def test_parse_args_rejects_non_numeric_threads() -> None:
+    with pytest.raises(SystemExit):
+        cli.parse_args(["-t", "many", "README.md"])
