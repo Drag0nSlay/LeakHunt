@@ -4,24 +4,32 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from typing import Sequence
 
 from .fetcher import fetch_multiple
 from .scanner import SecretFinding, scan_many
 from .utils import dump_json, log
 
 
-def parse_args() -> argparse.Namespace:
+def positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("threads must be a positive integer")
+    return parsed
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="LeakHunt secret scanner")
     parser.add_argument("targets", nargs="*", help="Mixed targets (URLs or local file paths)")
     parser.add_argument("-u", "--url", action="append", default=[], help="Single URL to scan (repeatable)")
     parser.add_argument("-U", "--url-file", help="File containing URLs/paths, one per line")
     parser.add_argument("-f", "--file", action="append", default=[], help="Local file to scan (repeatable)")
-    parser.add_argument("-t", "--threads", type=int, default=5, help="Thread count for fetching")
+    parser.add_argument("-t", "--threads", type=positive_int, default=5, help="Thread count for fetching")
     parser.add_argument("-o", "--output", help="Write results as JSON file")
     parser.add_argument("--entropy-threshold", type=float, default=3.5, help="Entropy threshold for candidate secrets")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable debug logs")
     parser.add_argument("--no-color", action="store_true", help="Disable ANSI colors")
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def load_targets_from_file(path: str) -> list[str]:
@@ -43,8 +51,8 @@ def _print_findings(findings: list[SecretFinding], use_color: bool) -> None:
         )
 
 
-def main() -> int:
-    args = parse_args()
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
     use_color = not args.no_color
 
     targets: list[str] = []
@@ -53,7 +61,11 @@ def main() -> int:
     targets.extend(args.file)
 
     if args.url_file:
-        targets.extend(load_targets_from_file(args.url_file))
+        try:
+            targets.extend(load_targets_from_file(args.url_file))
+        except OSError as exc:
+            log("ERROR", f"Failed to read target list {args.url_file}: {exc}", use_color=use_color)
+            return 1
 
     # Deduplicate while preserving insertion order.
     targets = list(dict.fromkeys(targets))
@@ -88,7 +100,11 @@ def main() -> int:
 
     if args.output:
         payload = [f.to_dict() for f in findings]
-        dump_json(payload, args.output)
+        try:
+            dump_json(payload, args.output)
+        except OSError as exc:
+            log("ERROR", f"Failed to write JSON results to {args.output}: {exc}", use_color=use_color)
+            return 1
         log("INFO", f"Saved JSON results to {args.output}", use_color=use_color)
 
     return 0
