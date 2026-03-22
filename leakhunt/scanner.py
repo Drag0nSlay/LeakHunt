@@ -82,4 +82,7 @@ def scan_many(
                 entropy_threshold=entropy_threshold,
             )
         )
-    return all_findings
+    return sorted(
+        all_findings,
+        key=lambda f: (f.source, f.secret_type, -f.entropy),
+    )

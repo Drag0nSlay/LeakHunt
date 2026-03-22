@@ -12,7 +12,10 @@ from .utils import dump_json, log
 
 
 def positive_int(value: str) -> int:
-    parsed = int(value)
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("threads must be a positive integer") from exc
     if parsed < 1:
         raise argparse.ArgumentTypeError("threads must be a positive integer")
     return parsed

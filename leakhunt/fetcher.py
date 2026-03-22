@@ -69,12 +69,14 @@ def fetch_target(target: str, timeout: int = 10) -> FetchResult:
 def fetch_multiple(
     targets: Iterable[str], threads: int = 5, timeout: int = 10
 ) -> list[FetchResult]:
-    results: list[FetchResult] = []
+    ordered_targets = list(targets)
+    results_by_target: dict[str, FetchResult] = {}
     with ThreadPoolExecutor(max_workers=max(1, threads)) as executor:
         futures = {
             executor.submit(fetch_target, target, timeout): target
-            for target in targets
+            for target in ordered_targets
         }
         for future in as_completed(futures):
-            results.append(future.result())
-    return results
+            target = futures[future]
+            results_by_target[target] = future.result()
+    return [results_by_target[target] for target in ordered_targets]
