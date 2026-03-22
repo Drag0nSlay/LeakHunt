@@ -1,4 +1,4 @@
-# 🔍 LeakHunt v2.0.0
+# 🔍 LeakHunt v2.1.2
 LeakHunt is now an **independent secret scanner** for bug bounty and security testing workflows.
 It scans URLs and local files, supports multithreaded fetching, entropy filtering, severity tagging, and JSON reporting.
 
