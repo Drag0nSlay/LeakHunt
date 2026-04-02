@@ -22,45 +22,27 @@ class SecretFinding:
         return data
 
 
-# Patterns that should NOT be filtered by entropy
-STRICT_PATTERNS = {
-    "AWS Access Key ID",
-    "GitHub Token (classic)",
-    "GitHub Fine-grained PAT",
-    "Private Key Block",
-}
-
-
 def scan_content(
     content: str,
     source: str,
     entropy_threshold: float = 3.5,
 ) -> list[SecretFinding]:
-    findings_set: set[tuple[str, str, str, str]] = set()
+    findings_set: set[tuple[str, str, str, str, float]] = set()
 
-    for item in PATTERNS:
-        for match in item.regex.finditer(content):
+    for pattern in PATTERNS:
+        for match in pattern.regex.finditer(content):
             value = match.group(0).strip()
             entropy = shannon_entropy(value)
 
-            # Skip entropy filtering for strict patterns
-            if (
-                item.name not in STRICT_PATTERNS
-                and entropy < entropy_threshold
-            ):
+            # Skip entropy filtering only if explicitly marked
+            if pattern.entropy_required and entropy < entropy_threshold:
                 continue
 
-            findings_set.add((source, item.name, value, item.severity))
+            findings_set.add((source, pattern.name, value, pattern.severity, entropy))
 
     findings: list[SecretFinding] = [
-        SecretFinding(
-            source=src,
-            secret_type=stype,
-            value=val,
-            severity=sev,
-            entropy=shannon_entropy(val),
-        )
-        for src, stype, val, sev in findings_set
+        SecretFinding(source, stype, val, sev, ent)
+        for src, stype, val, sev, ent in findings_set
     ]
 
     return sorted(
@@ -85,4 +67,4 @@ def scan_many(
     return sorted(
         all_findings,
         key=lambda f: (f.source, f.secret_type, -f.entropy),
-    )
+)
