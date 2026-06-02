@@ -4,11 +4,10 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from pathlib import Path
 from typing import Sequence
 
-from tqdm import tqdm
 from .fetcher import fetch_multiple
+from .patterns import load_patterns
 from .scanner import SecretFinding, scan_many
 from .utils import dump_json, log
 
@@ -36,7 +35,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--no-color", action="store_true", help="Disable ANSI colors")
     parser.add_argument("--safe-mode", action="store_true", help="Mask secret values in output")
     parser.add_argument("--dry-run", action="store_true", help="Validate targets only, no scanning")
-    parser.add_argument("--patterns-dir", default="patterns/", help="Directory for YAML patterns")
+    parser.add_argument("--patterns-dir", help="Directory for YAML patterns")
     return parser.parse_args(argv)
 
 
@@ -101,7 +100,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         log("DEBUG", f"Fetched {result.source} ({len(result.content)} bytes)", verbose=args.verbose, use_color=use_color)
         scan_inputs.append((result.source, result.content))
 
-    findings = scan_many(scan_inputs, entropy_threshold=args.entropy_threshold)
+    patterns = load_patterns(args.patterns_dir) if args.patterns_dir else None
+    findings = scan_many(scan_inputs, entropy_threshold=args.entropy_threshold, patterns=patterns)
 
     if not findings:
         print("[!] No secrets found")

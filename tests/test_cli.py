@@ -10,7 +10,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from leakhunt import cli
 
 
-def test_main_returns_error_for_missing_target_list(capsys: pytest.CaptureFixture[str]) -> None:
+def test_main_returns_error_for_missing_target_list(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     exit_code = cli.main(["-U", "missing-targets.txt", "--no-color"])
 
     captured = capsys.readouterr()
@@ -42,3 +44,42 @@ def test_parse_args_rejects_non_positive_threads() -> None:
 def test_parse_args_rejects_non_numeric_threads() -> None:
     with pytest.raises(SystemExit):
         cli.parse_args(["-t", "many", "README.md"])
+
+
+def test_main_detects_generic_api_key_with_spaces(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    sample = tmp_path / "sample.txt"
+    sample.write_text('api_key = "abcdefghijklmnopqrstuvwxyz123456"', encoding="utf-8")
+
+    exit_code = cli.main(["-f", str(sample), "--no-color"])
+
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Generic API Key" in captured.out
+
+
+def test_main_uses_custom_patterns_dir(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    sample = tmp_path / "sample.txt"
+    sample.write_text("CUSTOM_SECRET", encoding="utf-8")
+    patterns_dir = tmp_path / "patterns"
+    patterns_dir.mkdir()
+    (patterns_dir / "custom.yaml").write_text(
+        "- name: Custom Secret\n"
+        "  regex: CUSTOM_SECRET\n"
+        "  severity: high\n"
+        "  entropy_required: false\n",
+        encoding="utf-8",
+    )
+
+    exit_code = cli.main(
+        ["-f", str(sample), "--patterns-dir", str(patterns_dir), "--no-color"]
+    )
+
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Custom Secret" in captured.out

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from .patterns import PATTERNS
+from .patterns import PATTERNS, SecretPattern
 from .utils import shannon_entropy
 
 
@@ -26,10 +26,12 @@ def scan_content(
     content: str,
     source: str,
     entropy_threshold: float = 3.5,
+    patterns: tuple[SecretPattern, ...] | None = None,
 ) -> list[SecretFinding]:
     findings_set: set[tuple[str, str, str, str, float]] = set()
+    active_patterns = PATTERNS if patterns is None else patterns
 
-    for pattern in PATTERNS:
+    for pattern in active_patterns:
         for match in pattern.regex.finditer(content):
             value = match.group(0).strip()
             entropy = shannon_entropy(value)
@@ -41,19 +43,20 @@ def scan_content(
             findings_set.add((source, pattern.name, value, pattern.severity, entropy))
 
     findings: list[SecretFinding] = [
-        SecretFinding(source, stype, val, sev, ent)
+        SecretFinding(src, stype, val, sev, ent)
         for src, stype, val, sev, ent in findings_set
     ]
 
     return sorted(
         findings,
-        key=lambda f: (f.source, f.secret_type, -f.entropy),
+        key=lambda f: (f.source, f.secret_type, -f.entropy, f.severity, f.value),
     )
 
 
 def scan_many(
     items: list[tuple[str, str]],
     entropy_threshold: float = 3.5,
+    patterns: tuple[SecretPattern, ...] | None = None,
 ) -> list[SecretFinding]:
     all_findings: list[SecretFinding] = []
     for source, content in items:
@@ -62,9 +65,10 @@ def scan_many(
                 content,
                 source,
                 entropy_threshold=entropy_threshold,
+                patterns=patterns,
             )
         )
     return sorted(
         all_findings,
-        key=lambda f: (f.source, f.secret_type, -f.entropy),
-)
+        key=lambda f: (f.source, f.secret_type, -f.entropy, f.severity, f.value),
+    )
