@@ -12,3 +12,9 @@ def test_scan_many_returns_findings_in_sorted_order() -> None:
     findings = scan_many(items)
 
     assert [finding.source for finding in findings] == ["a.txt", "b.txt"]
+
+
+def test_scan_many_detects_spaced_generic_api_key_assignment() -> None:
+    findings = scan_many([("secrets.txt", 'api_key = "abcdefghijklmnopqrstuvwxyz123456"')])
+
+    assert any(finding.secret_type == "Generic API Key" for finding in findings)

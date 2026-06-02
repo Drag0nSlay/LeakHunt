@@ -6,7 +6,10 @@ import re
 import yaml
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Pattern, Tuple
+from typing import Pattern
+
+
+DEFAULT_PATTERNS_DIR = Path(__file__).with_name("patterns")
 
 
 @dataclass(frozen=True)
@@ -33,19 +36,19 @@ def load_yaml_pattern(pattern_file: Path) -> list[SecretPattern]:
     return patterns
 
 
-def load_patterns(patterns_dir: str = "patterns/") -> tuple[SecretPattern, ...]:
-    """Load all YAML patterns from directory."""
-    patterns_dir_path = Path(patterns_dir)
-    all_patterns = []
+def load_patterns(patterns_dir: str | Path | None = None) -> tuple[SecretPattern, ...]:
+    """Load YAML patterns from directory."""
+    patterns_dir_path = Path(patterns_dir) if patterns_dir is not None else DEFAULT_PATTERNS_DIR
+    all_patterns = _hardcoded_fallback() if patterns_dir is None else []
     
     if patterns_dir_path.exists():
-        for yaml_file in patterns_dir_path.glob("*.yaml"):
+        for yaml_file in sorted(patterns_dir_path.glob("*.yaml")):
             try:
                 all_patterns.extend(load_yaml_pattern(yaml_file))
             except Exception as e:
                 print(f"Warning: Failed to load {yaml_file}: {e}")
     
-    # Fallback to hardcoded if no YAML found
+    # Fallback to hardcoded if no YAML found in a custom directory
     if not all_patterns:
         all_patterns = _hardcoded_fallback()
     
@@ -66,8 +69,8 @@ def _hardcoded_fallback() -> list[SecretPattern]:
         SecretPattern("Twilio API Key", re.compile(r"SK[0-9a-fA-F]{32}"), "high", False),
         SecretPattern("AWS Access Key ID", re.compile(r"AKIA[0-9A-Z]{16}"), "high", False),
         SecretPattern("JWT", re.compile(r"eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9._-]{8,}\.[A-Za-z0-9._-]{8,}"), "medium", True),
-        SecretPattern("Generic API Key", re.compile(r'api[_-]?key[=:][\s]*["\']?[A-Za-z0-9_-]{16,64}["\']?'), "medium", False),
-        SecretPattern("Generic Token", re.compile(r'token[=:][\s]*["\']?[A-Za-z0-9_-]{16,64}["\']?'), "medium", False),
+        SecretPattern("Generic API Key", re.compile(r'api[_-]?key\s*[=:]\s*["\']?[A-Za-z0-9_-]{16,128}["\']?'), "medium", False),
+        SecretPattern("Generic Token", re.compile(r'token\s*[=:]\s*["\']?[A-Za-z0-9_-]{16,128}["\']?'), "medium", False),
     ]
 
 
