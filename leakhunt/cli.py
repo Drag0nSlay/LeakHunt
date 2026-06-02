@@ -127,12 +127,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())            log("ERROR", f"Failed to write JSON results to {args.output}: {exc}", use_color=use_color)
-            return 1
-        log("INFO", f"Saved JSON results to {args.output}", use_color=use_color)
-
-    return 0
-
-
-if __name__ == "__main__":
     raise SystemExit(main())
