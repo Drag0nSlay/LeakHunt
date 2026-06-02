@@ -5,6 +5,12 @@
 [![PyPI version](https://badge.fury.io/py/leakhunt.svg)](https://pypi.org/project/leakhunt/)
 [![Tests](https://github.com/Drag0nSlay/LeakHunt/actions/workflows/test.yml/badge.svg)](https://github.com/Drag0nSlay/LeakHunt/actions)
 
+## 🆕 What's New in v2.2.1
+- CI pipeline now passing on Python 3.9, 3.10, 3.11, 3.12
+- Added pip caching and retry logic to GitHub Actions workflow
+- Fixed lab/targets.txt missing on CI runners (auto-created in workflow)
+- Bumped GitHub Actions to Node.js 24 compatible versions
+
 ## 🆕 What’s New in v2.2.0 (Feature List)
 
 ### Core Detection Features
