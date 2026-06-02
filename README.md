@@ -6,10 +6,17 @@
 [![Tests](https://github.com/Drag0nSlay/LeakHunt/actions/workflows/test.yml/badge.svg)](https://github.com/Drag0nSlay/LeakHunt/actions)
 
 ## 🆕 What's New in v2.2.1
-- CI pipeline now passing on Python 3.9, 3.10, 3.11, 3.12
+- Pluggable pattern loading via leakhunt.patterns module
+- load_patterns with DEFAULT_PATTERNS_DIR and SecretPattern dataclass
+- YAML pattern loader with sorted *.yaml discovery and hardcoded fallback
+- Generic regexes now support spaces around =/: and secrets up to 128 chars
+- Scanner accepts optional patterns parameter for custom pattern sets
+- CLI --patterns-dir flag wires custom patterns directly into scan_many
+- Fixed api_key = "..." (spaced assignment) detection
+- CI pipeline hardened across Python 3.9, 3.10, 3.11, 3.12
 - Added pip caching and retry logic to GitHub Actions workflow
 - Fixed lab/targets.txt missing on CI runners (auto-created in workflow)
-- Bumped GitHub Actions to Node.js 24 compatible versions
+- All tests passing across all supported Python versions
 
 ## 🆕 What’s New in v2.2.0 (Feature List)
 
