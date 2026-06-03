@@ -25,7 +25,7 @@
 - Test suite expanded for scoring engine, context filtering, and CLI output validation
 - All tests passing (14 passed) and bytecode compilation verified via `python -m compileall leakhunt`
 
-**Full history:** CHANGELOG.md
+**Full history:** [CHANGELOG.md](https://github.com/Drag0nSlay/LeakHunt/blob/main/CHANGELOG.md)
 
 ---
 
