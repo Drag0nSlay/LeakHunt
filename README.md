@@ -1,4 +1,4 @@
-# 🚀 **LeakHunt v2.2.0 - Production Ready Secret Scanner**
+# 🚀 **LeakHunt v2.2.1 - Production Ready Secret Scanner**
 
 **Independent secret scanner** for bug bounty hunters and security testers. Scans URLs, local files, and directories to detect exposed secrets using pattern matching, entropy analysis, and severity classification.
 
