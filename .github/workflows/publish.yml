@@ -9,21 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write  # REQUIRED for PyPI Trusted Publishing
+      id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
       - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build
+        run: python -m pip install --upgrade build
 
       - name: Build package
         run: python -m build
