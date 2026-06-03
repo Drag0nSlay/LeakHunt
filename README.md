@@ -5,6 +5,28 @@
 [![PyPI version](https://badge.fury.io/py/leakhunt.svg)](https://pypi.org/project/leakhunt/)
 [![Tests](https://github.com/Drag0nSlay/LeakHunt/actions/workflows/test.yml/badge.svg)](https://github.com/Drag0nSlay/LeakHunt/actions)
 
+## What's New in v2.2.2
+- Full-secret preservation (no truncation) with masking moved strictly to display layer
+- Added explainable detection output with score and reasons fields per finding
+- Introduced hybrid scoring model combining pattern match, normalized entropy, and context signals
+- Replaced binary entropy threshold logic with weighted confidence scoring system
+- Added context-aware suppression for fake, test, dummy, example keywords
+- Added lightweight token-shape filter to reduce placeholder-based false positives
+- Implemented `detect_input_mode()` for automatic routing of file, URL, and raw text inputs
+- Fixed `-U` misinterpretation of raw secret lists as fetch targets
+- Improved CLI output consistency between `stdout` and `-o` JSON file export
+- Added `--json` flag for structured machine-readable output (CI/SOC ready)
+- Enhanced `--safe-mode` to only mask output layer without modifying internal detection values
+- Improved entropy normalization for stable scoring across varying token lengths
+- Added validation layer for ensuring pattern-triggered detections require minimum score thresholds
+- Refactored scanner pipeline into `extraction → filtering → scoring → explanation` stages
+- Improved logging clarity with severity + confidence visibility in verbose mode
+- All existing CLI flags (`-f, -u, -U, -o, --patterns-dir`) remain fully backward compatible
+- Test suite expanded for scoring engine, context filtering, and CLI output validation
+- All tests passing (14 passed) and bytecode compilation verified via `python -m compileall leakhunt`
+
+**Full history:** CHANGELOG.md
+
 ---
 
 ## ⚙️ Installation
