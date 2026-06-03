@@ -8,3 +8,5 @@ test.txt
 dist/
 build/
 *.egg-info/
+.vscode/
+.idea/

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leakhunt"
+version = "2.2.1"
+description = "A tool to detect sensitive information leaks in code"
+readme = "README.md"
+authors = [{name = "Drag0nSlay"}]
+license = {text = "MIT"}
+requires-python = ">=3.9"
+
+dependencies = [
+    "beautifulsoup4",
+    "colorama",
+    "requests>=2.31.0",
+    "tenacity>=8.2.3",
+    "tqdm>=4.66.0",
+    "pyyaml>=6.0"
+]
+
+[project.scripts]
+leakhunt = "leakhunt.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
