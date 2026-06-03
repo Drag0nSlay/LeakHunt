@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +23,15 @@ def is_url(target: str) -> bool:
     return parsed.scheme in {"http", "https"}
 
 
+def detect_input_mode(target: str) -> str:
+    """Detect whether a target is a URL, local file, or raw text snippet."""
+    if target.startswith(("http://", "https://")):
+        return "url"
+    if os.path.exists(target):
+        return "file"
+    return "raw_text"
+
+
 def _read_file_safely(path: Path) -> str:
     """
     Attempt to read file using multiple encodings.
@@ -40,13 +50,12 @@ def _read_file_safely(path: Path) -> str:
 
 
 def fetch_target(target: str, timeout: int = 10) -> FetchResult:
-    if is_url(target):
+    mode = detect_input_mode(target)
+    if mode == "url":
         try:
             req = Request(
                 target,
-                headers={
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-                },
+                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"},
             )
             with urlopen(req, timeout=timeout) as response:  # noqa: S310
                 return FetchResult(
@@ -56,9 +65,12 @@ def fetch_target(target: str, timeout: int = 10) -> FetchResult:
         except Exception as exc:  # noqa: BLE001
             return FetchResult(source=target, content="", error=str(exc))
 
+    if mode == "raw_text":
+        return FetchResult(source="raw_text", content=target)
+
     path = Path(target)
-    if not path.exists() or not path.is_file():
-        return FetchResult(source=target, content="", error="File does not exist")
+    if not path.is_file():
+        return FetchResult(source=target, content="", error="Path is not a file")
 
     try:
         return FetchResult(source=target, content=_read_file_safely(path))

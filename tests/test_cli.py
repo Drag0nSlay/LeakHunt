@@ -10,15 +10,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from leakhunt import cli
 
 
-def test_main_returns_error_for_missing_target_list(
+def test_url_file_argument_scans_raw_text_when_path_does_not_exist(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     exit_code = cli.main(["-U", "missing-targets.txt", "--no-color"])
 
     captured = capsys.readouterr()
 
-    assert exit_code == 1
-    assert "Failed to read target list missing-targets.txt" in captured.out
+    assert exit_code == 0
+    assert "No secrets found" in captured.out
 
 
 def test_main_returns_error_for_invalid_output_path(
@@ -83,3 +83,35 @@ def test_main_uses_custom_patterns_dir(
 
     assert exit_code == 0
     assert "Custom Secret" in captured.out
+
+
+def test_main_prints_structured_json(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    sample = tmp_path / "sample.txt"
+    sample.write_text("AKIA1234567890ABCDEF", encoding="utf-8")
+
+    exit_code = cli.main(["-f", str(sample), "--json"])
+
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert '"findings"' in captured.out
+    assert '"score"' in captured.out
+    assert '"reasons"' in captured.out
+
+
+def test_main_writes_structured_json_output(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    sample = tmp_path / "sample.txt"
+    output = tmp_path / "findings.json"
+    sample.write_text("AKIA1234567890ABCDEF", encoding="utf-8")
+
+    exit_code = cli.main(["-f", str(sample), "-o", str(output), "--no-color"])
+
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Saved JSON results" in captured.out
+    assert '"findings"' in output.read_text(encoding="utf-8")
