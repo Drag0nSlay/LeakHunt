@@ -1,0 +1,15 @@
+sk_test_51FakeStripeToken_9XyZ1234567890abcdef
+AKIAFAKEACCESSKEY1234567890
+ghp_fakeGitHubToken_1234567890abcdefABCDEF
+AIzaSyFakeGoogleKey_1234567890abcdef
+xoxb-fake-slack-token-1234567890-abcdef
+-----BEGIN FAKE PRIVATE KEY-----
+MIIEvFakeKeyDataThatIsNotReal1234567890
+-----END FAKE PRIVATE KEY-----
+9f3K#l2@Qw8Zx!mP7vT1
+a8c91f3e77b4d2c0ff99aa88bb77cc66
+zX91!pLmQ2v8#kJ0sD5nR
+dGVzdGluZ19lbmNvZGVkX3N0cmluZw==
+https://example.com/api sk_test_51FakeStripeToken_9XyZ1234567890abcdef
+login token ghp_fakeGitHubToken_1234567890abcdefABCDEF
+random noise a8c91f3e77b4d2c0ff99aa88bb77cc66
