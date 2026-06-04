@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "leakhunt"
-version = "2.2.1"
+version = "2.2.2"
 description = "A tool to detect sensitive information leaks in code"
 readme = "README.md"
 authors = [{name = "Drag0nSlay"}]
