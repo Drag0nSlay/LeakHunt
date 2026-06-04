@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="leakhunt",
-    version="2.2.1",
+    version="2.2.2",
     description="Independent secret discovery tool for URLs and local files",
     packages=find_packages(),
     include_package_data=True,
