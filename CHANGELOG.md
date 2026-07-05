@@ -1,4 +1,10 @@
 # Changelog
+## 🆕 What's New in v2.2.3
+- Tightened generic API key/token/secret and environment variable regexes with stricter length and character requirements.
+- Added frontend attribute, UI value, sensitive-keyword, score, entropy, and JavaScript-aware filters to reduce false positives.
+- Added duplicate-value suppression so the same secret is not reported under multiple generic types.
+- Bumped package metadata from v2.2.2 to v2.2.3.
+
 ## 🆕 What's New in v2.2.2
 - Full-secret preservation (no truncation) with masking moved strictly to display layer
 - Added explainable detection output with score and reasons fields per finding

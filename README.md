@@ -1,11 +1,16 @@
-# 🚀 **LeakHunt v2.2.2 - Production Ready Secret Scanner**
+# 🚀 **LeakHunt v2.2.3 - Production Ready Secret Scanner**
 
 **Independent secret scanner** for bug bounty hunters and security testers. Scans URLs, local files, and directories to detect exposed secrets using pattern matching, entropy analysis, and severity classification.
 
 [![PyPI version](https://badge.fury.io/py/leakhunt.svg)](https://pypi.org/project/leakhunt/)
 [![Tests](https://github.com/Drag0nSlay/LeakHunt/actions/workflows/test.yml/badge.svg)](https://github.com/Drag0nSlay/LeakHunt/actions)
 
-## What's New in v2.2.2
+## What's New in v2.2.3
+- Tightened generic and environment-variable detection to reduce false positives in UI/frontend code.
+- Added sensitive keyword, entropy, score, value sanity, duplicate-value, and JavaScript-aware filtering.
+- Bumped package metadata for the v2.2.3 release.
+
+## Previous v2.2.2 highlights
 - Full-secret preservation (no truncation) with masking moved strictly to display layer
 - Added explainable detection output with score and reasons fields per finding
 - Introduced hybrid scoring model combining pattern match, normalized entropy, and context signals

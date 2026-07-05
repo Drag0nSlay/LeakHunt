@@ -69,8 +69,8 @@ def _hardcoded_fallback() -> list[SecretPattern]:
         SecretPattern("Twilio API Key", re.compile(r"SK[0-9a-fA-F]{32}"), "high", False),
         SecretPattern("AWS Access Key ID", re.compile(r"AKIA[0-9A-Z]{16}"), "high", False),
         SecretPattern("JWT", re.compile(r"eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9._-]{8,}\.[A-Za-z0-9._-]{8,}"), "medium", True),
-        SecretPattern("Generic API Key", re.compile(r'api[_-]?key\s*[=:]\s*["\']?[A-Za-z0-9_-]{16,128}["\']?'), "medium", False),
-        SecretPattern("Generic Token", re.compile(r'token\s*[=:]\s*["\']?[A-Za-z0-9_-]{16,128}["\']?'), "medium", False),
+        SecretPattern("Generic API Key", re.compile(r'api[_-]?key\s*[=:]\s*["\']?[A-Za-z0-9_+./=-]{20,128}["\']?'), "medium", False),
+        SecretPattern("Generic Token", re.compile(r'token\s*[=:]\s*["\']?[A-Za-z0-9_+./=-]{20,128}["\']?'), "medium", False),
     ]
 
 
