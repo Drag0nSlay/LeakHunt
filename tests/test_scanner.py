@@ -46,3 +46,32 @@ def test_scan_many_adds_explainability_reasons_and_score() -> None:
     assert any(reason.startswith("regex_match:") for reason in findings[0].reasons)
     assert any(reason.startswith("entropy_score:") for reason in findings[0].reasons)
     assert "context: clean" in findings[0].reasons
+
+
+def test_scan_many_filters_frontend_attributes_and_ui_values() -> None:
+    findings = scan_many(
+        [("app.html", 'title="SuperSecretLookingValue12345" data-token="toastModalValue1234567890"')]
+    )
+
+    assert not findings
+
+
+def test_scan_many_requires_sensitive_keyword_for_environment_variables() -> None:
+    findings = scan_many(
+        [("config.txt", 'PUBLIC_VALUE="AbCdEfGhIjKlMnOpQrSt12345"')]
+    )
+
+    assert not findings
+
+
+def test_scan_many_deduplicates_same_secret_value_across_generic_types() -> None:
+    secret = "AbCdEfGhIjKlMnOpQrSt12345"
+    findings = scan_many([("config.txt", f'API_KEY="{secret}" TOKEN="{secret}"')])
+
+    assert len(findings) == 1
+
+
+def test_scan_many_skips_env_var_detection_in_js_without_high_confidence() -> None:
+    findings = scan_many([("bundle.js", 'API_KEY="abcdefghijklmnopqrst12345"')])
+
+    assert all(finding.secret_type != "Environment Variable" for finding in findings)
